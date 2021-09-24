@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    h1 {
+      color: blue;
+      border: 2px solid black;
+      background-color: red;
+      display: flex;
+      justify-content: center;
+    }
+
+    button {
+      background-color: lightblue;
+    }
+
+    .btn-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+  <head>
+    <title>Web Components with Webpack Starter Kit</title>
+  </head>
+
+  <template id="my-template">
+    <div class="container">
+      <p class="p-elem"></p>
+    </div>
+  </template>
+
+  <template id="my-shadow-template">
+    <style>
+      h1 {
+        background-color: gray;
+        border: 3px solid black;
+      }
+
+      p {
+        font-family: "Lucida Console", "Courier New", monospace;
+        color: blue;
+      }
+    </style>
+    <div class="container">
+      <h1>Shadow DOM</h1>
+      <p>This is inside the SHADOWSSS</p>
+    </div>
+  </template>
+
+
+  <body>
+    <h1>A h1 Header</h1>
+    <app-header></app-header>
+
+    <my-custom-elem></my-custom-elem>
+
+    <a is="confirm-link" href="https://daitan.com/">Daitan Home</a>
+
+    <custom-button label="LEarning Session"></custom-button>
+
+    <div id="template-container"></div>
+
+    <div id="shadow-host"></div>
+
+    <script src="./bundle.js"></script>
+
+    <script>
+      const myTemplate = document.getElementById('my-template');
+
+      // import node gets a copy of the node, second argument is for
+      // deep copy, which means copy nodes's children as well
+      const templateInstance = document.importNode(myTemplate.content, true);
+
+      templateInstance.querySelector(".p-elem").innerHTML = "Template now instanced";
+
+      // finally add to the DOM tree
+      document.getElementById("template-container").appendChild(templateInstance)
+    </script>
+
+    <script>
+      const shadowTemplate = document.getElementById('my-shadow-template');
+      // shadow host is an empty div (for now......)
+      const shadowHostNode = document.getElementById("shadow-host");
+
+      const shadowRoot = shadowHostNode.attachShadow({ mode: "closed" });
+      // inject template content inside our new shadow DOM
+      shadowRoot.appendChild(shadowTemplate.content.cloneNode(true));
+    </script>
+
+    <script>
+      const element = document.querySelector('custom-button');
+      element.data = "HELLO THERE";
+    </script>
+
+  </body>
+</html>
